@@ -4,12 +4,12 @@ import {
   Yubi25519Account__factory,
   Yubi25519AccountFactory,
   Yubi25519AccountFactory__factory,
-} from '../../../../../contracts/typechain-types';
+} from './typechain-types';
 import {
-//  SimpleAccount,
-//  SimpleAccount__factory,
-//  SimpleAccountFactory,
-//  SimpleAccountFactory__factory,
+  //  SimpleAccount,
+  //  SimpleAccount__factory,
+  //  SimpleAccountFactory,
+  //  SimpleAccountFactory__factory,
   UserOperationStruct,
 } from '@account-abstraction/contracts';
 import { arrayify, hexConcat } from 'ethers/lib/utils';
@@ -19,8 +19,7 @@ import { MessageSigningRequest } from '../../Background/redux-slices/signing';
 import { TransactionDetailsForUserOp } from '@account-abstraction/sdk/dist/src/TransactionDetailsForUserOp';
 import config from '../../../exconfig';
 
-const FACTORY_ADDRESS =
-  config.factory_address;
+const FACTORY_ADDRESS = config.factory_address;
 
 /**
  * An implementation of the BaseAccountAPI using the Yubi25519Account contract.

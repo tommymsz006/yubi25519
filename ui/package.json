@@ -26,6 +26,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
+    "@openzeppelin/contracts": "^4.8.3",
     "@peculiar/asn1-ecc": "^2.3.4",
     "@peculiar/asn1-schema": "^2.3.3",
     "@redux-devtools/cli": "^2.0.0",
