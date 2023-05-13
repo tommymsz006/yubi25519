@@ -45,6 +45,7 @@ const Transaction = ({
             size="large"
             variant="contained"
             onClick={() => {
+              console.log(transaction);
               onComplete(transaction, undefined);
               setLoader(true);
             }}

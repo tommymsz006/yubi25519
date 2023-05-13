@@ -6,10 +6,6 @@ import {
   Yubi25519AccountFactory__factory,
 } from './typechain-types';
 import {
-  //  SimpleAccount,
-  //  SimpleAccount__factory,
-  //  SimpleAccountFactory,
-  //  SimpleAccountFactory__factory,
   UserOperationStruct,
 } from '@account-abstraction/contracts';
 import { arrayify, hexConcat } from 'ethers/lib/utils';

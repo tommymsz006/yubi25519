@@ -36,27 +36,9 @@ typechain
 cache
 artifacts
 
+# System files
+.DS_Store
+Thumbs.db
 
-node_modules
-.env
-coverage
-coverage.json
-typechain
-
-# Hardhat files
-cache
-artifacts
-
-
-node_modules
-.env
-coverage
-coverage.json
-typechain
-
-# Hardhat files
-cache
-artifacts
-typechain-types
-deployments
-mnemonic.txt
+# Typechain files
+src/pages/Account/account-api/typechain-types
