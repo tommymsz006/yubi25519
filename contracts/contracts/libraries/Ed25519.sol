@@ -280,7 +280,7 @@ library Ed25519 {
         bytes32 r,
         bytes32 s,
         bytes memory m
-    ) internal pure returns (bool) {
+    ) public pure returns (bool) {
             uint256 hh;
             // Step 1: compute SHA-512(R, A, M)
             {

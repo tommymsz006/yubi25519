@@ -147,7 +147,7 @@ library Sha512 {
     // @notice Calculate the SHA512 of input data.
     // @param data input data bytes
     // @return 512 bits hash result
-    function hash(bytes memory data) internal pure returns (uint64[8] memory) {
+    function hash(bytes memory data) public pure returns (uint64[8] memory) {
         uint64[8] memory H = [
             0x6a09e667f3bcc908,
             0xbb67ae8584caa73b,
