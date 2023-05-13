@@ -76,6 +76,7 @@ const Onboarding: OnboardingComponent = ({
     // store registrationInfo.credentialID (device identifier) and registrationInfo.credentialPublicKey (public key verify authn later)
 
     if (verification.verified && verification.registrationInfo) {
+      console.log('onOnboardingComplete');
       // mark onboarding complete and save the auth device obtained
       onOnboardingComplete({
         credentialPublicKey: verification.registrationInfo.credentialPublicKey,

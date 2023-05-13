@@ -1,9 +1,15 @@
 import { BigNumber, BigNumberish, ethers, Wallet } from 'ethers';
 import {
-  SimpleAccount,
-  SimpleAccount__factory,
-  SimpleAccountFactory,
-  SimpleAccountFactory__factory,
+  Yubi25519Account,
+  Yubi25519Account__factory,
+  Yubi25519AccountFactory,
+  Yubi25519AccountFactory__factory,
+} from '../../../../../contracts/typechain-types';
+import {
+//  SimpleAccount,
+//  SimpleAccount__factory,
+//  SimpleAccountFactory,
+//  SimpleAccountFactory__factory,
   UserOperationStruct,
 } from '@account-abstraction/contracts';
 import { arrayify, hexConcat } from 'ethers/lib/utils';
@@ -14,16 +20,16 @@ import { TransactionDetailsForUserOp } from '@account-abstraction/sdk/dist/src/T
 import config from '../../../exconfig';
 
 const FACTORY_ADDRESS =
-  config.factory_address || '0x6C583EE7f3a80cB53dDc4789B0Af1aaFf90e55F3';
+  config.factory_address;
 
 /**
- * An implementation of the BaseAccountAPI using the SimpleAccount contract.
+ * An implementation of the BaseAccountAPI using the Yubi25519Account contract.
  * - contract deployer gets "entrypoint", "owner" addresses and "index" nonce
  * - owner signs requests using normal "Ethereum Signed Message" (ether's signer.signMessage())
  * - nonce method is "nonce()"
  * - execute method is "execFromEntryPoint()"
  */
-class SimpleAccountAPI extends AccountApiType {
+class Yubi25519AccountAPI extends AccountApiType {
   name: string;
   factoryAddress?: string;
   owner: Wallet;
@@ -33,9 +39,9 @@ class SimpleAccountAPI extends AccountApiType {
    * our account contract.
    * should support the "execFromEntryPoint" and "nonce" methods
    */
-  accountContract?: SimpleAccount;
+  accountContract?: Yubi25519Account;
 
-  factory?: SimpleAccountFactory;
+  factory?: Yubi25519AccountFactory;
 
   constructor(params: AccountApiParamsType<{}, { privateKey: string }>) {
     super(params);
@@ -45,7 +51,7 @@ class SimpleAccountAPI extends AccountApiType {
       ? new ethers.Wallet(params.deserializeState?.privateKey)
       : ethers.Wallet.createRandom();
     this.index = 0;
-    this.name = 'SimpleAccountAPI';
+    this.name = 'Yubi25519AccountAPI';
   }
 
   serialize = async (): Promise<{ privateKey: string }> => {
@@ -54,9 +60,9 @@ class SimpleAccountAPI extends AccountApiType {
     };
   };
 
-  async _getAccountContract(): Promise<SimpleAccount> {
+  async _getAccountContract(): Promise<Yubi25519Account> {
     if (this.accountContract == null) {
-      this.accountContract = SimpleAccount__factory.connect(
+      this.accountContract = Yubi25519Account__factory.connect(
         await this.getAccountAddress(),
         this.provider
       );
@@ -71,7 +77,7 @@ class SimpleAccountAPI extends AccountApiType {
   async getAccountInitCode(): Promise<string> {
     if (this.factory == null) {
       if (this.factoryAddress != null && this.factoryAddress !== '') {
-        this.factory = SimpleAccountFactory__factory.connect(
+        this.factory = Yubi25519AccountFactory__factory.connect(
           this.factoryAddress,
           this.provider
         );
@@ -137,4 +143,4 @@ class SimpleAccountAPI extends AccountApiType {
   };
 }
 
-export default SimpleAccountAPI;
+export default Yubi25519AccountAPI;

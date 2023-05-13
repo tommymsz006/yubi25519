@@ -2,8 +2,8 @@
 export default {
   enablePasswordEncryption: false,
   showTransactionConfirmationScreen: true,
-  factory_address: '0x9406Cc6185a346906296840746125a0E44976454',
-  stateVersion: '0.2',
+  factory_address: '0xF508c7A8f88343CeC5275ABA9C4CD1C6d03950FD',
+  stateVersion: '0.7',
   network: {
     chainID: '11155111',
     family: 'EVM',
