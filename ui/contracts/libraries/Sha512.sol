@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.12;
 
 // adopt the work from Vincent (@chengwenxi) in https://github.com/chengwenxi/Ed25519
 

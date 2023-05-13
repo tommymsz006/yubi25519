@@ -11,7 +11,7 @@ import 'dotenv/config';
 const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
   solidity: {
-    version: "0.8.18",
+    version: "0.8.12",
     settings: {
       optimizer: {
         enabled: true,
