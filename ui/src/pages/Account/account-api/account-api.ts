@@ -136,6 +136,28 @@ class Yubi25519AccountAPI extends AccountApiType {
       signature: await this.signUserOpHash(await this.getUserOpHash(userOp)),
     };
   };
+
+  async encodeUserOpCallDataAndGasLimit(detailsForUserOp: TransactionDetailsForUserOp): Promise<{
+        callData: string;
+        callGasLimit: BigNumber;
+    }> {
+    console.log('encodeUserOpCallDataAndGasLimit');
+    const result = await super.encodeUserOpCallDataAndGasLimit(detailsForUserOp);
+    return {
+      callData: result.callData,
+      callGasLimit: result.callGasLimit.mul(10)
+    };
+  }
+
+  async getPreVerificationGas(userOp: Partial<UserOperationStruct>): Promise<number> {
+    console.log('getPreVerificationGas');
+    return 1100000;
+  }
+
+  async getVerificationGasLimit(): Promise<BigNumberish> {
+    console.log('getVerificationGasLimit' + await super.getVerificationGasLimit());
+    return ethers.BigNumber.from(1100000);
+  }
 }
 
 export default Yubi25519AccountAPI;

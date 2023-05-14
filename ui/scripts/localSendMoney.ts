@@ -4,14 +4,16 @@
 // You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
-import { ethers } from 'hardhat';
+import { ethers } from "hardhat";
 
 async function main() {
+  const recipient = '0xD3354AA819C51BAE2C803c1d7AfDAB52D4Ea32F0';
   const [signer] = await ethers.getSigners();
   signer.sendTransaction({
-    to: '0x0A77cEdFB8459084aB81CF6786EadDaCf7974146',
-    value: ethers.utils.parseEther('1'),
+    to: recipient,
+    value: ethers.utils.parseEther('0.027'),
   });
+  console.log(`Finished sending ETH to ${recipient}.`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -2,15 +2,15 @@
 export default {
   enablePasswordEncryption: false,
   showTransactionConfirmationScreen: true,
-  factory_address: '0x420a7653Bf116C7A077863561EcEcbC2274Ae5ff',
-  stateVersion: '0.7',
+  factory_address: '0xD000E27A622Ec2bE1C03105c8957BdAAAe5df936',
+  stateVersion: '0.6',
   network: {
-    chainID: '11155111',
+    chainID: '5',
     family: 'EVM',
-    name: 'Sepolia',
-    provider: 'https://sepolia.infura.io/v3/bdabe9d2f9244005af0f566398e648da',
+    name: 'Goerli',
+    provider: 'https://goerli.infura.io/v3/bdabe9d2f9244005af0f566398e648da',
     entryPointAddress: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
-    bundler: 'https://sepolia.voltaire.candidewallet.com/rpc',
+    bundler: 'https://api.stackup.sh/v1/node/28a464becf31abb4dd4bc7971eb9cc21c630c5f817b2f794cd6572f557c9e5e4',
     baseAsset: {
       symbol: 'ETH',
       name: 'ETH',

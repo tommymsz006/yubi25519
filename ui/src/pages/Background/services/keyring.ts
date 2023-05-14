@@ -439,6 +439,11 @@ export default class KeyringService extends BaseService<Events> {
       ? estimatePreVerificationGas.toHexString()
       : userOp.preVerificationGas;
 
+    // cap gas limit to its max (1500000)
+    if (ethers.BigNumber.from(userOp.verificationGasLimit).gt(1500000)) {
+      userOp.verificationGasLimit = ethers.BigNumber.from(1500000).toHexString();
+    }
+
     return userOp;
   };
 

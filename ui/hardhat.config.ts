@@ -9,7 +9,7 @@ import '@nomiclabs/hardhat-etherscan';
 import 'dotenv/config';
 
 const config: HardhatUserConfig = {
-  defaultNetwork: 'hardhat',
+  defaultNetwork: 'ethereum-goerli',
   solidity: {
     version: "0.8.12",
     settings: {
@@ -25,6 +25,12 @@ const config: HardhatUserConfig = {
   networks: {
     'ethereum-goerli': {
       url: process.env.ETHEREUM_GOERLI_URL || "",
+      from: process.env.TESTNET_ACCOUNT || "",
+      accounts: process.env.TESTNET_PRIVATE_KEY !== undefined ? [process.env.TESTNET_PRIVATE_KEY] : [],
+      allowUnlimitedContractSize: true
+    },
+    'ethereum-sepolia': {
+      url: process.env.ETHEREUM_SEPOLIA_URL || "",
       from: process.env.TESTNET_ACCOUNT || "",
       accounts: process.env.TESTNET_PRIVATE_KEY !== undefined ? [process.env.TESTNET_PRIVATE_KEY] : [],
       allowUnlimitedContractSize: true

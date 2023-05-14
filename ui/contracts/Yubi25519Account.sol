@@ -84,7 +84,7 @@ contract Yubi25519Account is BaseAccount, TokenCallbackHandler, UUPSUpgradeable,
         Ed25519.verify(  hex"06cf14cfae0ff9fe7fdf773202029a3e8976465c8919f4840d1c3c77c8162435",
                          hex"a6161c95fd4e3237b7dd12cc3052aaa69382510ecb5b89c2fbeb8b6efb78266b",
                          hex"81160af2842235a0257fc1d3e968c2c1c9f56f117da3186effcaeda256c38a0d",
-                         hex"b0d8bdfd9f4d1023dae836b2e41da5019d20c60965dc40943e2c10f2ad4ee49ab0d8bdfd9f4d1023dae836b2e41da5019d20c60965dc")) {
+                         hex"b0d8bdfd9f4d1023dae836b2e41da5019d20c60965dc40943e2c10f2ad4ee49ab0d8bdfd9f4d1023dae836b2e41da5019d20c60965dc");
         return 0;
     }
 
