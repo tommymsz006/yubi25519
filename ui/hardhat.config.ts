@@ -35,8 +35,8 @@ const config: HardhatUserConfig = {
       accounts: process.env.TESTNET_PRIVATE_KEY !== undefined ? [process.env.TESTNET_PRIVATE_KEY] : [],
       allowUnlimitedContractSize: true
     },
-    'ethereum-sepolia': {
-      url: process.env.ETHEREUM_SEPOLIA_URL || "",
+    'scroll': {
+      url: process.env.SCROLL_URL || "",
       from: process.env.TESTNET_ACCOUNT || "",
       accounts: process.env.TESTNET_PRIVATE_KEY !== undefined ? [process.env.TESTNET_PRIVATE_KEY] : [],
       allowUnlimitedContractSize: true
