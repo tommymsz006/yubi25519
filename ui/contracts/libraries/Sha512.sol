@@ -147,7 +147,7 @@ library Sha512 {
     // @notice Calculate the SHA512 of input data.
     // @param data input data bytes
     // @return 512 bits hash result
-    function hash(bytes memory data) public pure returns (uint64[8] memory) {
+    function hash(bytes memory data) internal pure returns (uint64[8] memory) {
         uint64[8] memory H = [
             0x6a09e667f3bcc908,
             0xbb67ae8584caa73b,
@@ -251,54 +251,56 @@ library Sha512 {
         bytes memory blocks = preprocess(data);
 
         for (uint256 j = 0; j < blocks.length / 128; j++) {
-            uint64[16] memory M = cutBlock(blocks, j);
+            unchecked {
+                uint64[16] memory M = cutBlock(blocks, j);
 
-            fvar.a = H[0];
-            fvar.b = H[1];
-            fvar.c = H[2];
-            fvar.d = H[3];
-            fvar.e = H[4];
-            fvar.f = H[5];
-            fvar.g = H[6];
-            fvar.h = H[7];
+                fvar.a = H[0];
+                fvar.b = H[1];
+                fvar.c = H[2];
+                fvar.d = H[3];
+                fvar.e = H[4];
+                fvar.f = H[5];
+                fvar.g = H[6];
+                fvar.h = H[7];
 
-            for (uint256 i = 0; i < 80; i++) {
-                if (i < 16) {
-                    W[i] = M[i];
-                } else {
-                    W[i] =
-                        gamma1(W[i - 2]) +
-                        W[i - 7] +
-                        gamma0(W[i - 15]) +
-                        W[i - 16];
+                for (uint256 i = 0; i < 80; i++) {
+                    if (i < 16) {
+                        W[i] = M[i];
+                    } else {
+                        W[i] =
+                            gamma1(W[i - 2]) +
+                            W[i - 7] +
+                            gamma0(W[i - 15]) +
+                            W[i - 16];
+                    }
+
+                    T1 =
+                        fvar.h +
+                        sigma1(fvar.e) +
+                        Ch(fvar.e, fvar.f, fvar.g) +
+                        K[i] +
+                        W[i];
+                    T2 = sigma0(fvar.a) + Maj(fvar.a, fvar.b, fvar.c);
+
+                    fvar.h = fvar.g;
+                    fvar.g = fvar.f;
+                    fvar.f = fvar.e;
+                    fvar.e = fvar.d + T1;
+                    fvar.d = fvar.c;
+                    fvar.c = fvar.b;
+                    fvar.b = fvar.a;
+                    fvar.a = T1 + T2;
                 }
 
-                T1 =
-                    fvar.h +
-                    sigma1(fvar.e) +
-                    Ch(fvar.e, fvar.f, fvar.g) +
-                    K[i] +
-                    W[i];
-                T2 = sigma0(fvar.a) + Maj(fvar.a, fvar.b, fvar.c);
-
-                fvar.h = fvar.g;
-                fvar.g = fvar.f;
-                fvar.f = fvar.e;
-                fvar.e = fvar.d + T1;
-                fvar.d = fvar.c;
-                fvar.c = fvar.b;
-                fvar.b = fvar.a;
-                fvar.a = T1 + T2;
+                H[0] = H[0] + fvar.a;
+                H[1] = H[1] + fvar.b;
+                H[2] = H[2] + fvar.c;
+                H[3] = H[3] + fvar.d;
+                H[4] = H[4] + fvar.e;
+                H[5] = H[5] + fvar.f;
+                H[6] = H[6] + fvar.g;
+                H[7] = H[7] + fvar.h;
             }
-
-            H[0] = H[0] + fvar.a;
-            H[1] = H[1] + fvar.b;
-            H[2] = H[2] + fvar.c;
-            H[3] = H[3] + fvar.d;
-            H[4] = H[4] + fvar.e;
-            H[5] = H[5] + fvar.f;
-            H[6] = H[6] + fvar.g;
-            H[7] = H[7] + fvar.h;
         }
 
         return H;

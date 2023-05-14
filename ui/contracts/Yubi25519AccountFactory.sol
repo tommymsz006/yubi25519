@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.12;
 
-import '@openzeppelin/contracts/utils/Create2.sol';
-import '@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol';
+import "@openzeppelin/contracts/utils/Create2.sol";
+import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
-import './Yubi25519Account.sol';
+import "./Yubi25519Account.sol";
+
 
 contract Yubi25519AccountFactory {
     Yubi25519Account public immutable accountImplementation;
