@@ -8,7 +8,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import logo from '../../../../assets/img/logo.svg';
+import main from '../../../../assets/img/main.jpg';
 import { useNavigate } from 'react-router-dom';
 
 const Intro = () => {
@@ -36,14 +36,11 @@ const Intro = () => {
         }}
       >
         <CardContent>
-          <Typography textAlign="center" variant="h3" gutterBottom>
-            Start your eth journey
+          <Typography textAlign="center" variant="h4" gutterBottom>
+            Welcome to Yubi Castle!
           </Typography>
           <Typography textAlign="center" variant="body1" color="text.secondary">
-            Your smart contract account with unlimited possibilities,{' '}
-            <Link href="https://github.com/eth-infinitism/trampoline">
-              learn more
-            </Link>
+            Bring the YubiKey you use everyday in the Web3 world
           </Typography>
           <Box
             display="flex"
@@ -51,16 +48,8 @@ const Intro = () => {
             alignItems="center"
             sx={{ p: 5 }}
           >
-            <img height={250} src={logo} className="App-logo" alt="logo" />
+            <img height={300} src={main} className="App-logo" alt="logo" />
           </Box>
-          <Typography
-            textAlign="center"
-            sx={{ fontSize: 14 }}
-            color="text.secondary"
-            gutterBottom
-          >
-            Ethereum Foundation
-          </Typography>
         </CardContent>
         <CardActions sx={{ pl: 4, pr: 4, width: '100%' }}>
           <Stack spacing={2} sx={{ width: '100%' }}>
@@ -69,7 +58,7 @@ const Intro = () => {
               variant="contained"
               onClick={() => navigate('/accounts/new')}
             >
-              Create/recover new account
+              Let's get started
             </Button>
           </Stack>
         </CardActions>

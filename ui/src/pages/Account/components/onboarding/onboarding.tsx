@@ -14,6 +14,9 @@ import { VerifyRegistrationResponseOpts, verifyRegistrationResponse } from '@sim
 import { generateChallenge, isoBase64URL } from '@simplewebauthn/server/helpers';
 import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types';
 
+
+import onboardingImg from '../../../../assets/img/onboarding.jpg';
+
 const Onboarding: OnboardingComponent = ({
   onOnboardingComplete,
 }: OnboardingComponentProps) => {
@@ -88,22 +91,19 @@ const Onboarding: OnboardingComponent = ({
   return (
     <Box sx={{ padding: 2 }}>
       <CardContent>
-        <Typography variant="h3" gutterBottom>
-          Customisable Account Component
+        <Typography variant="h4" gutterBottom>
+          Register your YubiKey
         </Typography>
-        <Typography variant="body1" color="text.secondary">
-          You can show as many steps as you want in this dummy component. You
-          need to call the function <b>onOnboardingComplete</b> passed as a
-          props to this component. <br />
-          <br />
-          The function takes a context as a parameter, this context will be
-          passed to your AccountApi when creating a new account.
-          <br />
-          This Component is defined in exported in{' '}
-        </Typography>
-        <Typography variant="caption">
-          trampoline/src/pages/Account/components/onboarding/index.ts
-        </Typography>
+        <Stack spacing={1} justifyContent="center" alignItems="center">
+          <img
+            height={200}
+            src={onboardingImg}
+            alt='Onboarding'
+          />
+          <Typography variant="body1" color="text.secondary">
+            Get ready! Put your YubiKey in the appropriate slot, and follow the instructions to enter PIN then tap.<br />
+          </Typography>
+        </Stack>
       </CardContent>
       <CardActions sx={{ pl: 4, pr: 4, width: '100%' }}>
         <Stack spacing={2} sx={{ width: '100%' }}>
@@ -112,7 +112,7 @@ const Onboarding: OnboardingComponent = ({
             variant="contained"
             onClick={onCompleteClick}
           >
-            Continue
+            I'm ready
           </Button>
         </Stack>
       </CardActions>

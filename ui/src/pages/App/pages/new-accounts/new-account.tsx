@@ -41,11 +41,11 @@ const TakeNameComponent = ({
   return (
     <>
       <CardContent>
-        <Typography textAlign="center" variant="h3" gutterBottom>
+        <Typography textAlign="center" variant="h4" gutterBottom>
           New account
         </Typography>
         <Typography textAlign="center" variant="body1" color="text.secondary">
-          Give a name to your account so that you can recoganise it easily.
+          Give your YubiKey a fancy name here...
         </Typography>
         <FormGroup sx={{ p: 2, pt: 4 }}>
           <FormControl sx={{ m: 1 }} variant="outlined">
@@ -71,7 +71,7 @@ const TakeNameComponent = ({
               variant="contained"
               onClick={nextStage}
             >
-              Set name
+              Ok, let me use this
             </Button>
             {showLoader && (
               <CircularProgress

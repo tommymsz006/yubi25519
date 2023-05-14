@@ -46,7 +46,9 @@ const Header = () => {
         sx={{ cursor: 'pointer' }}
         onClick={() => navigate('/')}
       >
-        <img height={30} src={logo} className="App-logo" alt="logo" />
+        <Typography textAlign="left" variant="h4" gutterBottom>
+          🔑 Yubi Castle 🏰
+        </Typography>
       </Stack>
       <Stack
         direction="row"
