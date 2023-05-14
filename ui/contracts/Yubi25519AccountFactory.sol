@@ -16,9 +16,11 @@ contract Yubi25519AccountFactory {
 
     function createAccount(
         address owner,
+        string calldata credentialId,
+        string calldata credentialPublicKey,
         uint256 salt
     ) public returns (Yubi25519Account ret) {
-        address addr = getAddress(owner, salt);
+        address addr = getAddress(owner, credentialId, credentialPublicKey, salt);
         uint codeSize = addr.code.length;
         if (codeSize > 0) {
             return Yubi25519Account(payable(addr));
@@ -27,7 +29,7 @@ contract Yubi25519AccountFactory {
             payable(
                 new ERC1967Proxy{salt: bytes32(salt)}(
                     address(accountImplementation),
-                    abi.encodeCall(Yubi25519Account.initialize, (owner))
+                    abi.encodeCall(Yubi25519Account.initialize, (owner, credentialId, credentialPublicKey))
                 )
             )
         );
@@ -35,6 +37,8 @@ contract Yubi25519AccountFactory {
 
     function getAddress(
         address owner,
+        string calldata credentialId,
+        string calldata credentialPublicKey,
         uint256 salt
     ) public view returns (address) {
         return
@@ -45,7 +49,7 @@ contract Yubi25519AccountFactory {
                         type(ERC1967Proxy).creationCode,
                         abi.encode(
                             address(accountImplementation),
-                            abi.encodeCall(Yubi25519Account.initialize, (owner))
+                            abi.encodeCall(Yubi25519Account.initialize, (owner, credentialId, credentialPublicKey))
                         )
                     )
                 )

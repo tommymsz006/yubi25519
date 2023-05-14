@@ -18,10 +18,12 @@ contract Yubi25519Account is BaseAccount, TokenCallbackHandler, UUPSUpgradeable,
     using ECDSA for bytes32;
 
     address public owner;
+    string public credentialId;
+    string public credentialPublicKey;
 
     IEntryPoint private immutable _entryPoint;
 
-    event Yubi25519AccountInitialized(IEntryPoint indexed entryPoint, address indexed owner);
+    event Yubi25519AccountInitialized(IEntryPoint indexed entryPoint, address indexed owner, string credentialId, string credentialPublicKey);
 
     modifier onlyOwner() {
         _onlyOwner();
@@ -60,13 +62,15 @@ contract Yubi25519Account is BaseAccount, TokenCallbackHandler, UUPSUpgradeable,
         }
     }
 
-    function initialize(address anOwner) public virtual initializer {
-        _initialize(anOwner);
+    function initialize(address anOwner, string calldata aCredentialId, string calldata aCredentialPublicKey) public virtual initializer {
+        _initialize(anOwner, aCredentialId, aCredentialPublicKey);
     }
 
-    function _initialize(address anOwner) internal virtual {
+    function _initialize(address anOwner, string calldata aCredentialId, string calldata aCredentialPublicKey) internal virtual {
         owner = anOwner;
-        emit Yubi25519AccountInitialized(_entryPoint, owner);
+        credentialId = aCredentialId;
+        credentialPublicKey = aCredentialPublicKey;
+        emit Yubi25519AccountInitialized(_entryPoint, owner, credentialId, credentialPublicKey);
     }
 
     function _requireFromEntryPointOrOwner() internal view {

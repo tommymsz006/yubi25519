@@ -6,16 +6,71 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { EthersTransactionRequest } from '../../../Background/services/provider-bridge';
 import { TransactionComponentProps } from '../types';
+
+import useAccountApi from '../../useAccountApi';
+
+import { startAuthentication } from '@simplewebauthn/browser';
+import { VerifyAuthenticationResponseOpts, verifyAuthenticationResponse } from '@simplewebauthn/server';
+import { generateChallenge, isoBase64URL, isoUint8Array, toHash, decodeCredentialPublicKey, cose } from '@simplewebauthn/server/helpers';
+import { PublicKeyCredentialCreationOptionsJSON, PublicKeyCredentialRequestOptionsJSON, AuthenticatorDevice } from '@simplewebauthn/typescript-types';
 
 const Transaction = ({
   transaction,
   onComplete,
   onReject,
 }: TransactionComponentProps) => {
+
   const [loader, setLoader] = React.useState<boolean>(false);
+  const { result, loading, callAccountApi } = useAccountApi();
+
+  useEffect(() => {
+    callAccountApi('getCredentials', [transaction]);
+  }, [callAccountApi, transaction]);
+
+  const onCompleteClick = useCallback(async() => {
+    if (result) {
+      const rpId = chrome.runtime.id;  // get the chrome extension ID as domain
+      
+      const authChallenge: string = isoBase64URL.fromBuffer(generateChallenge());
+
+      const authOptions: PublicKeyCredentialRequestOptionsJSON = {
+        "challenge": authChallenge,
+        "allowCredentials": [
+          {
+            "id": result.credentialId,                              // limit to the previous device registered
+            "type": "public-key"
+          }
+        ],
+        "timeout": 60000,
+        "userVerification": "required",
+        "rpId": rpId
+      };
+
+      // start client-side authentication
+      const authResponse = await startAuthentication(authOptions);
+      console.log(authResponse);
+
+      // verify the signature
+      const authDataBuffer = isoBase64URL.toBuffer(authResponse.response.authenticatorData);
+      const signature = isoBase64URL.toBuffer(authResponse.response.signature);
+      const clientDataHash = await toHash(isoBase64URL.toBuffer(authResponse.response.clientDataJSON));
+      const message = isoUint8Array.concat([authDataBuffer, clientDataHash]);
+      const coseOKPPublicKey = decodeCredentialPublicKey(isoBase64URL.toBuffer(result.credentialPublicKey)) as cose.COSEPublicKeyOKP;  // assumed Ed25519
+      if (coseOKPPublicKey) {
+        // complete gathering the signature information for wallet contract to verify
+        onComplete(transaction, {
+          signature: isoBase64URL.toBuffer(authResponse.response.signature),
+          message: isoUint8Array.concat([authDataBuffer, clientDataHash]),
+          publicKey: coseOKPPublicKey.get(cose.COSEKEYS.x)
+        });
+
+        setLoader(true);
+      }
+    }
+  }, [result]);
 
   return (
     <>
@@ -44,11 +99,7 @@ const Transaction = ({
             disabled={loader}
             size="large"
             variant="contained"
-            onClick={() => {
-              console.log(transaction);
-              onComplete(transaction, undefined);
-              setLoader(true);
-            }}
+            onClick={onCompleteClick}
           >
             Continue
             {loader && (

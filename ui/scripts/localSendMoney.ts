@@ -7,7 +7,7 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const recipient = '0xD3354AA819C51BAE2C803c1d7AfDAB52D4Ea32F0';
+  const recipient = '0xcDc98814C04EAf087362a70e875E51851178b3A6';
   const [signer] = await ethers.getSigners();
   signer.sendTransaction({
     to: recipient,

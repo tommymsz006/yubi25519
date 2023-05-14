@@ -12,7 +12,9 @@ import { arrayify, hexConcat } from 'ethers/lib/utils';
 
 import { AccountApiParamsType, AccountApiType } from './types';
 import { MessageSigningRequest } from '../../Background/redux-slices/signing';
-import { TransactionDetailsForUserOp } from '@account-abstraction/sdk/dist/src/TransactionDetailsForUserOp';
+import { TransactionDetailsForUserOp } from '@account-abstraction/sdk/dist/src/TransactionDetailsForUserOp'
+import { EthersTransactionRequest } from '../../Background/services/types';;
+
 import config from '../../../exconfig';
 
 const FACTORY_ADDRESS = config.factory_address;
@@ -29,6 +31,8 @@ class Yubi25519AccountAPI extends AccountApiType {
   factoryAddress?: string;
   owner: Wallet;
   index: number;
+  credentialId: string | undefined;
+  credentialPublicKey: string | undefined;
 
   /**
    * our account contract.
@@ -38,7 +42,8 @@ class Yubi25519AccountAPI extends AccountApiType {
 
   factory?: Yubi25519AccountFactory;
 
-  constructor(params: AccountApiParamsType<{}, { privateKey: string }>) {
+  constructor(params: AccountApiParamsType<{ credentialId: string, credentialPublicKey: string },
+                                           { privateKey: string, credentialId: string | undefined, credentialPublicKey: string | undefined }>) {
     super(params);
     this.factoryAddress = FACTORY_ADDRESS;
 
@@ -46,12 +51,17 @@ class Yubi25519AccountAPI extends AccountApiType {
       ? new ethers.Wallet(params.deserializeState?.privateKey)
       : ethers.Wallet.createRandom();
     this.index = 0;
+    this.credentialId = params.context?.credentialId || params.deserializeState?.credentialId;
+    this.credentialPublicKey = params.context?.credentialPublicKey || params.deserializeState?.credentialPublicKey;
     this.name = 'Yubi25519AccountAPI';
+    console.log(this.credentialId, this.credentialPublicKey);
   }
 
-  serialize = async (): Promise<{ privateKey: string }> => {
+  serialize = async (): Promise<{ privateKey: string, credentialId: string | undefined, credentialPublicKey: string | undefined }> => {
     return {
       privateKey: this.owner.privateKey,
+      credentialId: this.credentialId,
+      credentialPublicKey: this.credentialPublicKey
     };
   };
 
@@ -84,6 +94,8 @@ class Yubi25519AccountAPI extends AccountApiType {
       this.factory.address,
       this.factory.interface.encodeFunctionData('createAccount', [
         await this.owner.getAddress(),
+        this.credentialId,
+        this.credentialPublicKey,
         this.index,
       ]),
     ]);
@@ -96,6 +108,15 @@ class Yubi25519AccountAPI extends AccountApiType {
     const accountContract = await this._getAccountContract();
     return await accountContract.getNonce();
   }
+
+  getCredentials = async(
+    transaction: EthersTransactionRequest
+  ) => {
+    return {
+      credentialId: this.credentialId,
+      credentialPublicKey: this.credentialPublicKey,
+    };
+  };
 
   /**
    * encode a method call from entryPoint to our contract
@@ -131,6 +152,8 @@ class Yubi25519AccountAPI extends AccountApiType {
     userOp: UserOperationStruct,
     context: any
   ): Promise<UserOperationStruct> => {
+    console.log('signUserOpWithContext');
+    console.log(context);
     return {
       ...userOp,
       signature: await this.signUserOpHash(await this.getUserOpHash(userOp)),
